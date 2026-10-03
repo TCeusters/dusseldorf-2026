@@ -45,10 +45,12 @@ h1,h2,h3{font-weight:700;line-height:1.2;margin:0}
 .intro{background:var(--dark);color:#fff;padding:8px 0 56px}
 .intro h1{font-size:clamp(40px,11vw,64px);letter-spacing:-.03em}
 .intro h1 .dot{color:var(--green)}
-.intro .sub{margin:2px 0 0;font-size:16px;color:#E9EBEA}
+.intro .sub{margin:2px 0 0;font-size:16px;color:#E9EBEA;font-style:italic}
 .intro .meta-line{margin:10px 0 0;font-size:14px;color:#E9EBEA;display:flex;flex-wrap:wrap;gap:4px 14px}
 .intro .meta-line b{color:#fff;font-weight:600}
 .intro .meta-line span:empty{display:none}
+.intro .meta-line:has(span:empty){display:none}
+.intro .updated{margin:8px 0 0;font-size:12px;color:var(--grey)}
 
 .offline{background:#FFF4D6;color:#2F3A3E;font-size:15px;padding:10px 16px;text-align:center}
 
@@ -192,8 +194,9 @@ footer .wrap{padding-top:32px;padding-bottom:calc(32px + env(safe-area-inset-bot
 <div class="intro">
   <div class="wrap">
     <h1>Dusseldorf<span class="dot">.</span></h1>
-    <p class="sub">Teambuilding · drie dagen op en langs de Rijn</p>
-    <p class="meta-line"><span id="countdown"></span><span id="updated"></span></p>
+    <p class="sub">Drie dagen op en langs de Rijn</p>
+    <p class="meta-line"><span id="countdown"></span></p>
+    <p class="updated" id="updated"></p>
   </div>
 </div>
 
