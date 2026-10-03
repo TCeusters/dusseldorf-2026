@@ -207,7 +207,7 @@ footer .wrap{padding-top:32px;padding-bottom:calc(32px + env(safe-area-inset-bot
 
 <main class="wrap" id="panels">
   <div class="fallback" id="fallback">
-    <p><strong>De pagina laadt niet volledig.</strong> Probeer ze te vernieuwen. Lukt het niet, bel dan het hotel: <a href="tel:+492111697860">+49 211 16 97 86 0</a>.</p>
+    <p><strong>De pagina laadt niet volledig.</strong> Probeer ze te vernieuwen. Lukt het niet, bel dan Tom of Cédric, of het hotel: <a href="tel:+492111697860">+49 211 16 97 86 0</a>.</p>
   </div>
 </main>
 
@@ -241,6 +241,7 @@ const PLACES = {
   hotrod:   { name:"Hotrod Tour", addr:"Hansaallee 190, 40547 Düsseldorf (inrit via Schwalmstraße)", lat:51.23757, lng:6.73797, coords:true, act:true },
   hwmitte:  { name:"Heimwerk Mitte", addr:"Martin-Luther-Platz 22, 40212 Düsseldorf", lat:51.22556, lng:6.78237, info:"Schnitzel en Duitse klassiekers" },
   luisa:    { name:"Trattoria Luisa", addr:"Luisenstraße 7, 40215 Düsseldorf", lat:51.21733, lng:6.77760, info:"Italiaans · ±8 min wandelen van het hotel" },
+  schloss:  { name:"Schlossturm (Burgplatz)", addr:"Burgplatz 30, 40213 Düsseldorf", lat:51.22745, lng:6.77110, act:true },
   cosmo:    { name:"Cosmo Sports", addr:"Diepenstraße 83, 40625 Düsseldorf", lat:51.23410, lng:6.84224, act:true }
 };
 
@@ -253,15 +254,15 @@ const DAYS = [
 const PROGRAM = [
   // ---------- VRIJDAG ----------
   { day:"vr", t:"06:45", end:"09:30", type:"onderweg", title:"Vertrek uit Antwerpen", place:"unterbach", drive:true, changed:"2026-10-03",
-    text:"We rijden rechtstreeks naar het Unterbacher See, ±2u30. Hang je <strong>groene Umweltplakette</strong> op de voorruit.",
-    tbd:"Waar we verzamelen en wie met wie rijdt, krijg je apart van de organisatie." },
+    text:"We starten om 10:00 aan het Unterbacher See. Reken op ±2u30 rijden, dus vertrek rond 06:45. Hang je <strong>groene Umweltplakette</strong> op de voorruit.",
+    tbd:"Elke carpool spreekt zelf af waar en hoe laat jullie vertrekken." },
   { day:"vr", t:"10:00", end:"12:00", type:"activiteit", title:"Drakenboot", place:"unterbach", changed:"2026-10-03",
     text:"Een drakenboot van 13 meter, trommelritme en twee teams die tegen elkaar racen. Droge kleren voor achteraf zijn handig." },
   { day:"vr", t:"12:00", end:"12:45", type:"onderweg", title:"Naar het hotel", place:"crown", drive:true, changed:"2026-10-03",
     text:"±25 minuten rijden. We parkeren in <strong>Parkhaus Crown</strong>, naast het hotel. De lunch is 2 minuten wandelen." },
   { day:"vr", t:"12:45", end:"14:15", type:"eten", title:"Lunch", place:"to1980", changed:"2026-10-03" },
   { day:"vr", t:"14:15", end:"15:00", type:"hotel", title:"Inchecken", place:"amano",
-    text:"Normaal kan je inchecken vanaf 15:00. Vroeger inchecken vragen we aan." },
+    text:"Normaal kan je inchecken vanaf 15:00." },
   { day:"vr", t:"15:00", end:"17:30", type:"activiteit", title:"Dixon-activiteit",
     tbd:"Hou de namiddag vrij. Wat we doen en waar, lees je hier binnenkort." },
   { day:"vr", t:"17:30", end:"18:00", type:"vrij", title:"Opfrissen en in het wit", place:"amano",
@@ -283,10 +284,9 @@ const PROGRAM = [
   { day:"za", t:"12:30", end:"13:00", type:"onderweg", title:"Naar de lunch", place:"crown", drive:true,
     text:"±15 minuten rijden naar Parkhaus Crown, daarna ±8 minuten wandelen naar Heimwerk Mitte." },
   { day:"za", t:"13:00", end:"14:40", type:"eten", title:"Lunch", place:"hwmitte",
-    text:"Het restaurant zorgt dat onze bestelling vlot buitengaat. Om 14:40 wandelen we samen naar de rondleiding." },
-  { day:"za", t:"15:00", end:"17:45", type:"activiteit", title:"Altbier-rondleiding en Rheinturm",
-    text:"Langs de Altbier-brouwerijen, met de Rheinturm (uitzicht op 168 meter) als afsluiter.",
-    tbd:"We vertrekken samen vanaf het restaurant. Het verzamelpunt van de gids volgt hier." },
+    text:"Het restaurant zorgt dat onze bestelling vlot buitengaat. Om 14:40 wandelen we samen naar de Burgplatz, ±15 minuten.", changed:"2026-10-03" },
+  { day:"za", t:"15:00", end:"17:45", type:"activiteit", title:"Altbier-Safari", place:"schloss", changed:"2026-10-03",
+    text:"Rondleiding <strong>in het Engels</strong> langs de Altbier-brouwerijen van de Altstadt. We verzamelen <strong>voor de Schlossturm op de Burgplatz</strong>." },
   { day:"za", t:"17:45", end:"19:15", type:"hotel", title:"Terug naar het hotel en opfrissen", place:"amano",
     text:"Even op adem komen voor het diner." },
   { day:"za", t:"19:30", end:"21:15", type:"eten", title:"Diner", place:"luisa",
@@ -453,6 +453,7 @@ function renderInfo() {
 
     <div class="icard help">
       <h3><span class="ico">${I.tel}</span>Hulp nodig?</h3>
+      <p>Vragen of een probleem onderweg? <strong>Bel Tom of Cédric.</strong></p>
       <div class="callgrid">${calls.join("")}</div>
     </div>
 
@@ -460,8 +461,8 @@ function renderInfo() {
     <div class="icard">
       <h3><span class="ico">${I.car}</span>Vertrek en wagens</h3>
       <ul>
-        <li>We vertrekken <strong>vrijdag 9 oktober om 06:45</strong> uit Antwerpen.</li>
-        <li>Waar we verzamelen en wie met wie rijdt, krijg je apart van de organisatie.</li>
+        <li>We starten <strong>vrijdag 9 oktober om 10:00</strong> aan het Unterbacher See. Reken op ±2u30 rijden vanuit Antwerpen: vertrek rond 06:45.</li>
+        <li>Elke carpool spreekt zelf af waar en hoe laat jullie vertrekken.</li>
         <li>Dusseldorf heeft een milieuzone: je hebt een <strong>groene Umweltplakette</strong> op de voorruit nodig (boete tot €100). Regel ze op tijd.</li>
       </ul>
     </div>
