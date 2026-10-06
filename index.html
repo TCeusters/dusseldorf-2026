@@ -114,6 +114,14 @@ h3.sec{font-size:20px;margin:30px 0 12px}
 .addr{display:flex;gap:8px;align-items:flex-start;margin-top:10px;font-size:15px}
 .addr svg{width:18px;height:18px;flex:none;margin-top:2px;color:var(--green)}
 .addr b{font-weight:600}
+.wx-day{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:-8px 0 16px;padding:10px 12px;border-radius:12px;background:var(--surface);font-size:15px}
+.wx-day svg{width:22px;height:22px;color:var(--green);flex:none}
+.wx-day b{font-weight:600}
+.wx-day small{display:block;width:100%;font-size:14px;color:var(--muted)}
+.wx{display:inline-flex;align-items:center;gap:4px;margin-left:auto;font-weight:400;font-size:14px;color:var(--muted)}
+.wx svg{width:17px;height:17px;color:var(--green)}
+.wx .rain{display:inline-flex;align-items:center;gap:2px;margin-left:6px}
+.wx .rain svg{width:14px;height:14px}
 .past-toggle{width:100%;min-height:44px;margin:0 0 14px;border:1px dashed var(--grey);background:transparent;color:var(--text);font:inherit;font-weight:600;font-size:15px;border-radius:12px;cursor:pointer}
 
 /* Knoppen */
@@ -261,19 +269,18 @@ const PROGRAM = [
   { day:"vr", t:"06:45", end:"09:30", type:"onderweg", title:"Vertrek uit Antwerpen", place:"unterbach", drive:true,
     text:"We starten om 10:00 aan het Unterbacher See. Reken op ±2u30 rijden, dus vertrek rond 06:45. Vergeet je <strong>groene Umweltplakette</strong> niet." },
   { day:"vr", t:"10:00", end:"12:00", type:"activiteit", title:"Drakenboot", place:"unterbach",
-    text:"Een drakenboot van 13 meter, trommelritme en twee teams die tegen elkaar racen. Droge kleren voor achteraf zijn handig." },
+    text:"Een drakenboot van 13 meter op trommelritme. Droge kleren voor achteraf zijn handig." },
   { day:"vr", t:"12:00", end:"12:45", type:"onderweg", title:"Naar het hotel", place:"crown", drive:true,
     text:"±25 minuten rijden. We parkeren in <strong>Parkhaus Crown</strong>, naast het hotel. De lunch is 2 minuten wandelen." },
   { day:"vr", t:"12:45", end:"14:15", type:"eten", title:"Lunch", place:"to1980" },
   { day:"vr", t:"14:15", end:"15:00", type:"hotel", title:"Inchecken", place:"amano" },
-  { day:"vr", t:"15:00", end:"17:30", type:"activiteit", title:"Dixon-activiteit",
-    tbd:"Hou de namiddag vrij. Wat we doen en waar, lees je hier binnenkort." },
+  { day:"vr", t:"15:00", end:"17:30", type:"activiteit", title:"Dixon-activiteit" },
   { day:"vr", t:"17:30", end:"18:00", type:"vrij", title:"Opfrissen en in het wit", place:"amano",
-    text:"Tijd om je <strong>helemaal in het wit</strong> te steken voor de boot." },
+    text:"Tijd om je <strong>helemaal in het wit</strong> te steken." },
   { day:"vr", t:"18:00", end:"18:30", type:"onderweg", title:"Te voet naar de Burgplatz", place:"kd",
     text:"±20 minuten wandelen door het centrum, of met de metro tot Heinrich-Heine-Allee." },
   { day:"vr", t:"18:30", end:"23:30", type:"activiteit", title:"All White Party op de Rijn", place:"kd",
-    text:"Partyboot MS RheinGalaxie. <strong>Inschepen om 18:30</strong>, terug aan wal om 22:30, het feest loopt tot 23:30. We eten aan boord. Aan boord betaal je <strong>alleen met kaart</strong>." },
+    text:"Partyboot MS RheinGalaxie. <strong>Inschepen om 18:30</strong>, terug aan wal om 22:30, het feest loopt tot 23:30. We kunnen snacks eten aan boord." },
   { day:"vr", t:"23:30", end:"02:00", type:"vrij", title:"Vrije avond in de Altstadt", place:"altstadt",
     text:"De ‘langste toog ter wereld’ ligt naast de aanlegsteiger. Terug naar het hotel is ±20 minuten wandelen." },
 
@@ -287,13 +294,12 @@ const PROGRAM = [
   { day:"za", t:"12:30", end:"13:00", type:"onderweg", title:"Naar de lunch", place:"crown", drive:true,
     text:"±15 minuten rijden naar Parkhaus Crown, daarna ±8 minuten wandelen naar Heimwerk Mitte." },
   { day:"za", t:"13:00", end:"14:40", type:"eten", title:"Lunch", place:"hwmitte",
-    text:"Het restaurant zorgt dat onze bestelling vlot buitengaat. Om 14:40 wandelen we samen naar de Burgplatz, ±15 minuten." },
+    text:"Om 14:40 wandelen we samen naar de Burgplatz, ±15 minuten." },
   { day:"za", t:"15:00", end:"17:45", type:"activiteit", title:"Altbier-Safari", place:"schloss",
     text:"Rondleiding <strong>in het Engels</strong> langs de Altbier-brouwerijen van de Altstadt. We verzamelen <strong>voor de Schlossturm op de Burgplatz</strong>." },
   { day:"za", t:"17:45", end:"19:15", type:"hotel", title:"Terug naar het hotel en opfrissen", place:"amano",
     text:"Even op adem komen voor het diner." },
-  { day:"za", t:"19:30", end:"21:15", type:"eten", title:"Diner", place:"luisa",
-    text:"±8 minuten wandelen vanaf het hotel." },
+  { day:"za", t:"19:30", end:"21:15", type:"eten", title:"Diner", place:"luisa" },
   { day:"za", t:"21:30", end:"23:00", type:"quiz", title:"Dixon-quiz", place:"amano",
     text:"Teams, vragen en eeuwige roem. In het hotel." },
   { day:"za", t:"23:00", end:"02:00", type:"vrij", title:"Vrije avond in de Altstadt", place:"altstadt",
@@ -312,7 +318,7 @@ const PROGRAM = [
     text:"±2u30 rijden, aankomst rond 17:00. Rij voorzichtig en tot maandag!" }
 ];
 
-const PACK = ["Identiteitskaart","Rijbewijs (nodig voor de Hotrod Tour)","Witte outfit voor vrijdagavond","Droge kleren voor na de drakenboot","Sportkleren en sportschoenen voor zondag","Regenjas: oktober aan de Rijn","Bankkaart (op de boot betaal je alleen met kaart)","Powerbank of oplader"];
+const PACK = ["Identiteitskaart","Rijbewijs (nodig voor de Hotrod Tour)","Witte outfit voor vrijdagavond","Droge kleren voor na de drakenboot","Sportkleren en sportschoenen voor zondag","Regenjas: oktober aan de Rijn","Bankkaart","Powerbank of oplader"];
 
 /* ============================ ICONEN ============================ */
 const sv = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
@@ -335,6 +341,14 @@ const I = {
   tram:sv('<rect x="5" y="4" width="14" height="13" rx="3"/><path d="M5 11h14M9 20l-2 2M15 20l2 2M9 17l-1 3M15 17l1 3M9 2h6"/>'),
   parking:sv('<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M10 16V8h3a2.5 2.5 0 0 1 0 5h-3"/>'),
   people:sv('<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0M16 4a3 3 0 0 1 0 6M21 20a6 6 0 0 0-4-5.6"/>'),
+  sun:sv('<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>'),
+  partly:sv('<path d="M8 4v1.5M3.5 8.5H5M4.9 4.9l1 1M12.5 5.5l-1 1"/><path d="M5.6 11a3.5 3.5 0 1 1 6.2-3"/><path d="M8 20h9a4 4 0 0 0 0-8 5 5 0 0 0-9.6 1.5A3.3 3.3 0 0 0 8 20z"/>'),
+  cloud:sv('<path d="M7 19h10a4.5 4.5 0 0 0 .5-9A6 6 0 0 0 6 11.5 3.8 3.8 0 0 0 7 19z"/>'),
+  fog:sv('<path d="M4 9h16M3 13h18M5 17h14"/>'),
+  rain:sv('<path d="M7 15h10a4 4 0 0 0 .5-8A5.5 5.5 0 0 0 6.5 8.5 3.3 3.3 0 0 0 7 15z"/><path d="M8 18l-1 2.5M12 18l-1 2.5M16 18l-1 2.5"/>'),
+  storm:sv('<path d="M7 14h10a4 4 0 0 0 .5-8A5.5 5.5 0 0 0 6.5 7.5 3.3 3.3 0 0 0 7 14z"/><path d="M12.5 14l-2 4h3l-2 4"/>'),
+  snow:sv('<path d="M7 14h10a4 4 0 0 0 .5-8A5.5 5.5 0 0 0 6.5 7.5 3.3 3.3 0 0 0 7 14z"/><path d="M8 18h.01M12 19h.01M16 18h.01M10 21h.01M14 21h.01"/>'),
+  drop:sv('<path d="M12 3s-6 6.5-6 11a6 6 0 0 0 12 0c0-4.5-6-11-6-11z"/>'),
   car:sv('<path d="M5 16V11l2-5h10l2 5v5M3 16h18v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-1H7v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M5 11h14"/>')
 };
 const TYPE_LABEL = { onderweg:"Onderweg", activiteit:"Activiteit", eten:"Eten", hotel:"Hotel", vrij:"Vrij", quiz:"Quiz" };
@@ -414,7 +428,7 @@ function renderItem(it) {
   const endTxt = it.type !== "vrij" ? `<small>tot ${it.end}</small>` : "";
   const title = it.type === "eten" && p ? `${it.title} · ${p.name}` : it.title;
   return `<li class="item t-${it.type}" id="${it.id}">
-    <div class="time">${it.t}${endTxt}</div>
+    <div class="time">${it.t}${endTxt}${WX_TYPES.includes(it.type) ? `<span class="wx" data-wx="${dayIso(it.day)}T${it.t.slice(0,2)}:00" hidden></span>` : ""}</div>
     <div class="card"><div class="chips">${chips.join("")}</div><h3>${esc(title)}</h3>${body}</div></li>`;
 }
 function dayStops(dayId) {
@@ -432,6 +446,7 @@ function renderDays() {
     const stops = dayStops(d.id);
     return `<section class="panel" role="tabpanel" id="panel-${d.id}" aria-labelledby="tab-${d.id}" hidden>
       <div class="day-intro"><h2>${d.title}</h2><p>${d.tagline}</p></div>
+      <div class="wx-day" data-wx-day="${d.id}" hidden></div>
       <button class="past-toggle" type="button" data-past="${d.id}" hidden></button>
       <ol class="timeline">${items}</ol>
       <h3 class="sec">Kaart van ${d.label.toLowerCase()}</h3>
@@ -636,6 +651,59 @@ function initMap(dayId) {
   if (stops.length) map.fitBounds(bounds, { padding:44, duration:0, maxZoom:15 });
 }
 
+/* ============================ WEER ============================ */
+// Weersverwachting van Open-Meteo (gratis, geen sleutel). Wordt bij elk openen en elk uur opnieuw opgehaald;
+// zonder internet tonen we de laatst opgehaalde verwachting.
+const WX_TYPES = ["activiteit","onderweg","vrij"];
+const WX_URL = "https://api.open-meteo.com/v1/forecast?latitude=51.22&longitude=6.78&hourly=temperature_2m,precipitation_probability,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code&timezone=Europe%2FBerlin&start_date=2026-10-09&end_date=2026-10-11";
+function wxInfo(c) {
+  if (c === 0) return ["sun","Zonnig"];
+  if (c === 1) return ["partly","Overwegend zonnig"];
+  if (c === 2) return ["partly","Half bewolkt"];
+  if (c === 3) return ["cloud","Bewolkt"];
+  if (c <= 48) return ["fog","Mist"];
+  if (c <= 57) return ["rain","Motregen"];
+  if (c <= 67) return ["rain","Regen"];
+  if (c <= 77) return ["snow","Sneeuw"];
+  if (c <= 82) return ["rain","Regenbuien"];
+  if (c <= 86) return ["snow","Sneeuwbuien"];
+  return ["storm","Onweer"];
+}
+function applyWeather(w) {
+  const j = w && w.data;
+  if (!j || !j.daily || !j.hourly) return;
+  const when = new Date(w.t).toLocaleString("nl-BE", { day:"numeric", month:"short", hour:"2-digit", minute:"2-digit" });
+  DAYS.forEach(d => {
+    const i = j.daily.time.indexOf(d.iso), el = document.querySelector(`[data-wx-day="${d.id}"]`);
+    if (!el || i < 0 || j.daily.temperature_2m_max[i] == null) return;
+    const [ico, lbl] = wxInfo(j.daily.weather_code[i]);
+    const lo = Math.round(j.daily.temperature_2m_min[i]), hi = Math.round(j.daily.temperature_2m_max[i]), p = j.daily.precipitation_probability_max[i];
+    el.innerHTML = `${I[ico]}<span><b>${lbl}</b> · ${lo}–${hi} °C${p != null ? ` · regenkans tot ${p}%` : ""}</span><small>Verwachting van Open-Meteo, opgehaald op ${when}.</small>`;
+    el.hidden = false;
+  });
+  document.querySelectorAll("[data-wx]").forEach(el => {
+    const i = j.hourly.time.indexOf(el.dataset.wx);
+    if (i < 0 || j.hourly.temperature_2m[i] == null) return;
+    const [ico, lbl] = wxInfo(j.hourly.weather_code[i]);
+    const t = Math.round(j.hourly.temperature_2m[i]), p = j.hourly.precipitation_probability[i];
+    el.innerHTML = `${I[ico]}${t}°${p != null ? `<span class="rain">${I.drop}${p}%</span>` : ""}`;
+    el.setAttribute("aria-label", `Weer: ${lbl}, ${t} graden${p != null ? `, ${p} procent regenkans` : ""}`);
+    el.title = lbl;
+    el.hidden = false;
+  });
+}
+async function loadWeather() {
+  let cached = null; try { cached = JSON.parse(localStorage.getItem("dus-weer") || "null"); } catch(e){}
+  if (cached) applyWeather(cached);
+  try {
+    const r = await fetch(WX_URL, { cache:"no-store" });
+    if (!r.ok) return;
+    const w = { t: Date.now(), data: await r.json() };
+    applyWeather(w);
+    try { localStorage.setItem("dus-weer", JSON.stringify(w)); } catch(e){}
+  } catch(e) { /* geen internet: de laatst opgehaalde verwachting blijft staan */ }
+}
+
 /* ============================ START ============================ */
 const panels = document.getElementById("panels");
 panels.innerHTML = renderDays() + renderInfo();
@@ -655,7 +723,7 @@ document.getElementById("live").addEventListener("click", e => {
   const hash = location.hash.slice(1);
   selectTab(TABS.some(t => t.id === hash) ? hash : (today ? today.id : (saved || "vr")), false);
 })();
-renderLive(); renderCountdown();
+renderLive(); renderCountdown(); loadWeather(); setInterval(loadWeather, 3600e3);
 setInterval(renderLive, 30000); setInterval(renderCountdown, 30000);
 const showOffline = () => document.getElementById("offline").hidden = navigator.onLine !== false;
 window.addEventListener("online", showOffline); window.addEventListener("offline", showOffline); showOffline();
