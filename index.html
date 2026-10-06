@@ -52,7 +52,7 @@ h1,h2,h3{font-weight:700;line-height:1.2;margin:0}
 .intro .meta-line b{color:#fff;font-weight:600}
 .intro .meta-line span:empty{display:none}
 .intro .meta-line:has(span:empty){display:none}
-.intro .updated{margin:8px 0 0;font-size:12px;color:var(--grey)}
+
 
 .offline{background:#FFF4D6;color:#2F3A3E;font-size:15px;padding:10px 16px;text-align:center}
 
@@ -206,7 +206,6 @@ footer .wrap{padding-top:32px;padding-bottom:calc(32px + env(safe-area-inset-bot
     <h1>Dusseldorf<span class="dot">.</span></h1>
     <p class="sub">Drie dagen op en langs de Rijn</p>
     <p class="meta-line"><span id="countdown"></span></p>
-    <p class="updated" id="updated"></p>
   </div>
 </div>
 
@@ -428,7 +427,7 @@ function renderItem(it) {
   const endTxt = it.type !== "vrij" ? `<small>tot ${it.end}</small>` : "";
   const title = it.type === "eten" && p ? `${it.title} · ${p.name}` : it.title;
   return `<li class="item t-${it.type}" id="${it.id}">
-    <div class="time">${it.t}${endTxt}${WX_TYPES.includes(it.type) ? `<span class="wx" data-wx="${dayIso(it.day)}T${it.t.slice(0,2)}:00" hidden></span>` : ""}</div>
+    <div class="time">${it.t}${endTxt}<span class="wx" data-wx="${dayIso(it.day)}T${it.t.slice(0,2)}:00" hidden></span></div>
     <div class="card"><div class="chips">${chips.join("")}</div><h3>${esc(title)}</h3>${body}</div></li>`;
 }
 function dayStops(dayId) {
@@ -469,12 +468,6 @@ function renderInfo() {
   return `<section class="panel" role="tabpanel" id="panel-info" aria-labelledby="tab-info" hidden>
     <div class="day-intro"><h2>Info</h2><p>Hotel, parking en praktische afspraken.</p></div>
 
-    <div class="icard help">
-      <h3><span class="ico">${I.tel}</span>Hulp nodig?</h3>
-      <p>Vragen of een probleem onderweg? <strong>Bel Tom of Cédric.</strong></p>
-      <div class="callgrid">${calls.join("")}</div>
-    </div>
-
     <h3 class="sec">Voor vertrek</h3>
     <div class="icard">
       <h3><span class="ico">${I.car}</span>Vertrek en wagens</h3>
@@ -492,12 +485,6 @@ function renderInfo() {
         <li>Schoenen en accessoires mogen een andere kleur hebben.</li>
       </ul>
     </div>
-    <div class="icard" id="paklijst">
-      <h3><span class="ico">${I.bag}</span>Paklijst</h3>
-      <ul class="check" id="pack">${PACK.map((p,i) => `<li role="checkbox" tabindex="0" aria-checked="${done.includes(i)}" data-i="${i}" class="${done.includes(i)?'done':''}">${esc(p)}</li>`).join("")}</ul>
-      <p class="note-small" id="pack-note">Tik om af te vinken. Je gsm onthoudt het.</p>
-    </div>
-
     <h3 class="sec">Hotel</h3>
     <div class="icard">
       <h3><span class="ico">${I.hotel}</span>${esc(h.name)}</h3>
@@ -551,6 +538,19 @@ function renderInfo() {
       <div class="weetje"><b>Langste toog ter wereld</b><p>De bijnaam van de Altstadt: honderden cafés en brouwerijen op minder dan een vierkante kilometer.</p></div>
       <div class="weetje"><b>Little Tokyo</b><p>Rond de Immermannstraße, vlak bij ons hotel, woont een van de grootste Japanse gemeenschappen van Europa.</p></div>
     </div>
+
+    <div style="height:28px"></div>
+    <div class="icard help">
+      <h3><span class="ico">${I.tel}</span>Hulp nodig?</h3>
+      <p>Vragen of een probleem onderweg? <strong>Bel Tom of Cédric.</strong></p>
+      <div class="callgrid">${calls.join("")}</div>
+    </div>
+
+    <div class="icard" id="paklijst">
+      <h3><span class="ico">${I.bag}</span>Paklijst</h3>
+      <ul class="check" id="pack">${PACK.map((p,i) => `<li role="checkbox" tabindex="0" aria-checked="${done.includes(i)}" data-i="${i}" class="${done.includes(i)?'done':''}">${esc(p)}</li>`).join("")}</ul>
+      <p class="note-small" id="pack-note">Tik om af te vinken. Je gsm onthoudt het.</p>
+    </div>
   </section>`;
 }
 function bindPack() {
@@ -584,8 +584,8 @@ function renderLive() {
   document.querySelectorAll(".item").forEach(n => { n.classList.remove("is-now","is-past"); n.hidden = false; n.querySelector("[data-now]").hidden = true; });
   document.querySelectorAll(".past-toggle").forEach(b => b.hidden = true);
   if (now < first.start) {
-    el.innerHTML = liveCol("Eerste stop", first, now, false) +
-      `<div class="col"><div class="lbl">Voor vertrek</div><h3>Klaar om te vertrekken?</h3><div class="when">Dresscode, paklijst en milieusticker staan bij Info.</div><button class="linkbtn" type="button" data-goto="info">Naar de paklijst</button></div>`;
+    el.innerHTML = liveCol("Eerste stop", first, now, false);
+    el.firstElementChild.style.gridColumn = "1 / -1";
     return;
   }
   if (now > last.stop) {
@@ -654,7 +654,6 @@ function initMap(dayId) {
 /* ============================ WEER ============================ */
 // Weersverwachting van Open-Meteo (gratis, geen sleutel). Wordt bij elk openen en elk uur opnieuw opgehaald;
 // zonder internet tonen we de laatst opgehaalde verwachting.
-const WX_TYPES = ["activiteit","onderweg","vrij"];
 const WX_URL = "https://api.open-meteo.com/v1/forecast?latitude=51.22&longitude=6.78&hourly=temperature_2m,precipitation_probability,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code&timezone=Europe%2FBerlin&start_date=2026-10-09&end_date=2026-10-11";
 function wxInfo(c) {
   if (c === 0) return ["sun","Zonnig"];
@@ -708,13 +707,8 @@ async function loadWeather() {
 const panels = document.getElementById("panels");
 panels.innerHTML = renderDays() + renderInfo();
 renderTabs(); bindPack();
-document.getElementById("updated").textContent = "Bijgewerkt op " + LAST_UPDATE;
 panels.addEventListener("click", e => {
   const b = e.target.closest(".past-toggle"); if (b) { pastOpen[b.dataset.past] = !pastOpen[b.dataset.past]; renderLive(); }
-});
-document.getElementById("live").addEventListener("click", e => {
-  const b = e.target.closest("[data-goto]"); if (!b) return;
-  selectTab(b.dataset.goto, true); document.getElementById("paklijst").scrollIntoView({ block:"start" });
 });
 (function initialTab(){
   const now = Date.now();
@@ -724,6 +718,21 @@ document.getElementById("live").addEventListener("click", e => {
   selectTab(TABS.some(t => t.id === hash) ? hash : (today ? today.id : (saved || "vr")), false);
 })();
 renderLive(); renderCountdown(); loadWeather(); setInterval(loadWeather, 3600e3);
+(function focusNow(){
+  // Tijdens het weekend: open de juiste dag en spring naar wat nu bezig is (of als eerste komt).
+  if (location.hash) return;
+  const now = Date.now();
+  if (now < PROGRAM[0].start || now > PROGRAM[PROGRAM.length - 1].stop) return;
+  const target = PROGRAM.filter(it => it.start <= now && now < it.stop).pop() || PROGRAM.find(it => it.start > now);
+  if (!target) return;
+  if (target.day !== currentTab) { selectTab(target.day, false); renderLive(); }
+  const jump = () => {
+    const n = document.getElementById(target.id), bar = document.querySelector(".tabbar");
+    if (n) window.scrollTo({ top: n.getBoundingClientRect().top + window.scrollY - bar.offsetHeight - 12 });
+  };
+  requestAnimationFrame(() => requestAnimationFrame(jump));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(jump);
+})();
 setInterval(renderLive, 30000); setInterval(renderCountdown, 30000);
 const showOffline = () => document.getElementById("offline").hidden = navigator.onLine !== false;
 window.addEventListener("online", showOffline); window.addEventListener("offline", showOffline); showOffline();
