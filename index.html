@@ -254,13 +254,13 @@ const PLACES = {
   hwmitte:  { name:"Heimwerk Mitte", addr:"Martin-Luther-Platz 22, 40212 Düsseldorf", lat:51.22556, lng:6.78237, info:"Schnitzel en Duitse klassiekers" },
   luisa:    { name:"Trattoria Luisa", addr:"Luisenstraße 7, 40215 Düsseldorf", lat:51.21733, lng:6.77760, info:"Italiaans · ±8 min wandelen van het hotel" },
   schloss:  { name:"Schlossturm (Burgplatz)", addr:"Burgplatz 30, 40213 Düsseldorf", lat:51.22745, lng:6.77110, act:true },
-  cosmo:    { name:"Cosmo Sports", addr:"Diepenstraße 83, 40625 Düsseldorf", lat:51.23410, lng:6.84224, act:true }
+  superfly: { name:"Superfly", addr:"Kappeler Straße 126, 40599 Düsseldorf", lat:51.17187, lng:6.86227, act:true }
 };
 
 const DAYS = [
   { id:"vr", label:"Vrijdag",  date:"9 okt",  iso:"2026-10-09", title:"Vrijdag 9 oktober",  tagline:"Drakenboot · Dixon-activiteit · All White Party" },
   { id:"za", label:"Zaterdag", date:"10 okt", iso:"2026-10-10", title:"Zaterdag 10 oktober", tagline:"Hotrod Tour · Altbier-Safari · Dixon-quiz" },
-  { id:"zo", label:"Zondag",   date:"11 okt", iso:"2026-10-11", title:"Zondag 11 oktober",  tagline:"Lasertag · Bubble football" }
+  { id:"zo", label:"Zondag",   date:"11 okt", iso:"2026-10-11", title:"Zondag 11 oktober",  tagline:"Trampolinepark Superfly" }
 ];
 
 const PROGRAM = [
@@ -307,17 +307,17 @@ const PROGRAM = [
   // ---------- ZONDAG ----------
   { day:"zo", t:"09:00", end:"10:30", type:"hotel", title:"Ontbijt en uitchecken", place:"amano",
     text:"Uitchecken kan tot 12:00, maar we vertrekken om 10:30. Neem je bagage mee naar de wagen." },
-  { day:"zo", t:"10:30", end:"11:00", type:"onderweg", title:"Naar Cosmo Sports", place:"cosmo", drive:true,
+  { day:"zo", t:"10:30", end:"11:00", type:"onderweg", title:"Naar Superfly", place:"superfly", drive:true, changed:"2026-10-08",
     text:"Wagens ophalen in Parkhaus Crown, ±20 minuten rijden. <strong>Parking ter plaatse.</strong>" },
-  { day:"zo", t:"11:00", end:"13:00", type:"activiteit", title:"Lasertag en bubble football", place:"cosmo",
-    text:"Sportkleren en sportschoenen aan." },
-  { day:"zo", t:"13:00", end:"14:30", type:"eten", title:"Afscheidslunch", place:"cosmo", noRoute:true,
-    text:"In het restaurant van Cosmo Sports, ter plaatse." },
+  { day:"zo", t:"11:00", end:"13:00", type:"activiteit", title:"Trampolinepark Superfly", place:"superfly", changed:"2026-10-08",
+    text:"Springen in het trampolinepark. Sportkleren aan, zonder ritsen of kap, en juwelen af. Op de trampolines mag je alleen met de antislipsokken van Superfly. Tassen gaan in een locker." },
+  { day:"zo", t:"13:00", end:"14:30", type:"eten", title:"Snack", place:"superfly", noRoute:true, changed:"2026-10-08",
+    text:"Aansluitend eten we een snack bij Superfly." },
   { day:"zo", t:"14:30", end:"17:00", type:"onderweg", title:"Terug naar Antwerpen", drive:true,
     text:"±2u30 rijden, aankomst rond 17:00. Rij voorzichtig en tot maandag!" }
 ];
 
-const PACK = ["Identiteitskaart","Rijbewijs (nodig voor de Hotrod Tour)","Witte outfit voor vrijdagavond","Droge kleren voor na de drakenboot","Sportkleren en sportschoenen voor zondag","Regenjas: oktober aan de Rijn","Bankkaart","Powerbank of oplader"];
+const PACK = ["Identiteitskaart","Rijbewijs (nodig voor de Hotrod Tour)","Witte outfit voor vrijdagavond","Droge kleren voor na de drakenboot","Sportkleren voor zondag (zonder ritsen of kap)","Regenjas: oktober aan de Rijn","Bankkaart","Powerbank of oplader"];
 
 /* ============================ ICONEN ============================ */
 const sv = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
@@ -370,7 +370,7 @@ PROGRAM.forEach(it => {
   it.id = `${it.day}-${it.t.replace(":","")}`;
   it.p = it.place ? PLACES[it.place] : null;
 });
-const isChanged = it => it.changed && Date.now() < ts(it.changed, "00:00") + 2*24*3600e3;
+const isChanged = it => it.changed && Date.now() < ts(it.changed, "00:00") + 4*24*3600e3;
 const icoFor = it => it.type === "onderweg" ? (it.drive ? I.car : I.walk) : I[it.type];
 
 function actions(it) {
@@ -508,7 +508,7 @@ function renderInfo() {
       <p>${esc(c.addr)} · dag en nacht open · ±3 minuten wandelen van het hotel.</p>
       <ul>
         <li>Hier staan de wagens van vrijdagmiddag tot zondagochtend.</li>
-        <li>Bij de Hotrod Tour (zaterdag) en Cosmo Sports (zondag) is er parking ter plaatse.</li>
+        <li>Bij de Hotrod Tour (zaterdag) en Superfly (zondag) is er parking ter plaatse.</li>
         <li>Handig: met de <strong>EasyPark</strong>-app parkeer je in Crown zonder ticket, want de parking herkent je nummerplaat. Installeer de app en voeg je nummerplaat toe vóór vertrek. Zonder app neem je gewoon een ticket en betaal je aan de automaat.</li>
       </ul>
       <div class="actions">
