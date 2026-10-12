@@ -78,6 +78,9 @@ h1,h2,h3{font-weight:700;line-height:1.2;margin:0}
 .tab{flex:1;min-height:52px;border:0;background:var(--surface);color:var(--text);font:inherit;font-weight:600;font-size:15px;padding:6px 4px;border-radius:12px;cursor:pointer;text-align:center;line-height:1.2}
 .tab small{display:block;font-weight:400;font-size:14px;color:var(--muted)}
 .tab[aria-selected="true"]{background:var(--dark);color:#fff}
+.tab .ls{display:none}
+@media (max-width:440px){.tabbar .wrap{gap:4px}.tab{flex:1 1 auto;font-size:14px;padding:6px 3px}.tab small{font-size:12.5px}}
+@media (max-width:380px){.tab .ll{display:none}.tab .ls{display:inline}}
 .tab[aria-selected="true"] small{color:#E9EBEA}
 @media (prefers-color-scheme: dark){.tab[aria-selected="true"]{background:#fff;color:var(--dark)}.tab[aria-selected="true"] small{color:#525C60}}
 
@@ -177,6 +180,22 @@ h3.sec{font-size:20px;margin:30px 0 12px}
 .weetje b{display:block;font-size:17px;margin-bottom:4px}
 .weetje b::before{content:"_ ";color:var(--green)}
 .weetje p{margin:0;font-size:15px;color:#E9EBEA}
+
+/* Feedback */
+.fb label.fl{display:block;font-weight:600;margin:14px 0 6px}
+.fb textarea{width:100%;min-height:160px;resize:vertical;font:inherit;font-size:16px;line-height:1.5;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.fb textarea:focus{outline:3px solid var(--green);outline-offset:1px;border-color:var(--green)}
+.fb .row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;flex-wrap:wrap}
+.fb .count{font-size:14px;color:var(--muted)}
+.fb .btn[disabled]{opacity:.6;cursor:default}
+.fb .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.fb-msg{margin-top:12px;font-size:15px}
+.fb-msg.err{color:var(--text);border-left:4px solid var(--grey);padding:8px 12px;background:var(--surface);border-radius:8px}
+.fb-ok{text-align:center;padding:8px 4px}
+.fb-ok .ico{width:56px;height:56px;border-radius:50%;margin:4px auto 10px}
+.fb-ok .ico svg{width:28px;height:28px}
+.fb-ok h3{display:block;font-size:20px}
+.fb-ok p{margin:6px 0 14px}
 
 .fallback{margin:24px 0;padding:16px;border-radius:var(--radius);background:var(--surface)}
 
@@ -326,6 +345,8 @@ const I = {
   route:sv('<circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M8.5 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.5"/>'),
   waze:sv('<path d="M5 16.5A7.5 7.5 0 1 1 20 12c0 2.6-1.4 4.4-3.5 5.2"/><path d="M5 16.5c-1 0-2-.6-2-1.8M9.5 18.5a1.5 1.5 0 1 1-3 0M17.5 18.5a1.5 1.5 0 1 1-3 0M11 18.5h3.5"/><path d="M10 13.5c1.2 1 3.8 1 5 0"/>'),
   tel:sv('<path d="M5 4h3.5l1.5 4.5-2 1.5a11 11 0 0 0 6 6l1.5-2 4.5 1.5V19a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>'),
+  chat:sv('<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/>'),
+  ok:sv('<path d="M5 12.5l4.5 4.5L19 7.5"/>'),
   info:sv('<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>'),
   onderweg:sv('<path d="M5 16V11l2-5h10l2 5v5M3 16h18v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-1H7v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M5 11h14"/>'),
   walk:sv('<circle cx="13" cy="4" r="2"/><path d="m9 21 2-6 3 3v3M7 12l3-4 4 1 2 4M11 15l-1-4"/>'),
@@ -383,11 +404,11 @@ function actions(it) {
 }
 
 /* ============================ TABS ============================ */
-const TABS = [...DAYS.map(d => ({ id:d.id, label:d.label, sub:d.date })), { id:"info", label:"Info", sub:"praktisch" }];
+const TABS = [...DAYS.map(d => ({ id:d.id, label:d.label, short:d.label.slice(0,2), sub:d.date })), { id:"info", label:"Info", sub:"praktisch" }, { id:"feedback", label:"Feedback", sub:"anoniem" }];
 let currentTab = null;
 function renderTabs() {
   document.getElementById("tabs").innerHTML = TABS.map(t =>
-    `<button class="tab" role="tab" id="tab-${t.id}" aria-controls="panel-${t.id}" aria-selected="false" tabindex="-1">${t.label}<small>${t.sub}</small></button>`).join("");
+    `<button class="tab" role="tab" id="tab-${t.id}" aria-controls="panel-${t.id}" aria-selected="false" tabindex="-1">${t.short ? `<span class="ll">${t.label}</span><span class="ls">${t.short}</span>` : t.label}<small>${t.sub}</small></button>`).join("");
   const bar = document.getElementById("tabs");
   bar.addEventListener("click", e => { const b = e.target.closest(".tab"); if (b) selectTab(b.id.slice(4), true); });
   bar.addEventListener("keydown", e => {
@@ -567,6 +588,60 @@ function bindPack() {
   list.addEventListener("keydown", e => { if ((e.key === " " || e.key === "Enter") && e.target.matches("li")) { e.preventDefault(); toggle(e.target); } });
 }
 
+/* ============================ FEEDBACK ============================ */
+// Gaat via Web3Forms rechtstreeks per mail naar de organisatie. Op deze site wordt niets bewaard.
+const FEEDBACK_KEY = "5f236987-14b7-42a1-a3ee-3ee6d032da06";
+function renderFeedback() {
+  return `<section class="panel" role="tabpanel" id="panel-feedback" aria-labelledby="tab-feedback" hidden>
+    <div class="day-intro"><h2>Feedback</h2><p>Hoe was het? Laat het ons weten.</p></div>
+    <div class="icard fb" id="fb-box">
+      <h3><span class="ico">${I.chat}</span>Jouw feedback</h3>
+      <p>Wat vond je top, wat kan beter? Je bericht gaat rechtstreeks naar de organisatie. We vragen geen naam en op deze site blijft niets bewaard. Wil je een antwoord, zet dan zelf je naam erbij.</p>
+      <form id="fb-form" novalidate>
+        <label class="fl" for="fb-text">Je bericht</label>
+        <textarea id="fb-text" name="message" maxlength="4000" required placeholder="Schrijf hier je feedback…"></textarea>
+        <div class="hp" aria-hidden="true"><label>Laat leeg <input type="checkbox" name="botcheck" id="fb-bot" tabindex="-1" autocomplete="off"></label></div>
+        <div class="row">
+          <span class="count" id="fb-count">0 / 4000</span>
+          <button class="btn" type="submit" id="fb-send">${I.chat}Verstuur feedback</button>
+        </div>
+        <div class="fb-msg" id="fb-msg" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+  </section>`;
+}
+function bindFeedback() {
+  const box = document.getElementById("fb-box"), form = document.getElementById("fb-form"),
+        text = document.getElementById("fb-text"), send = document.getElementById("fb-send"),
+        msg = document.getElementById("fb-msg"), count = document.getElementById("fb-count");
+  const html = box.innerHTML;
+  const setMsg = (t, err) => { msg.textContent = t; msg.className = "fb-msg" + (err ? " err" : ""); };
+  text.addEventListener("input", () => { count.textContent = `${text.value.length} / 4000`; if (msg.classList.contains("err")) setMsg(""); });
+  form.addEventListener("submit", async e => {
+    e.preventDefault();
+    const body = text.value.trim();
+    if (!body) { setMsg("Schrijf eerst je feedback in het vak.", true); text.focus(); return; }
+    if (document.getElementById("fb-bot").checked) return;
+    if (navigator.onLine === false) { setMsg("Je bent offline. Je tekst blijft staan: probeer opnieuw zodra je verbinding hebt.", true); return; }
+    send.disabled = true; setMsg("Bezig met versturen…");
+    try {
+      const r = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({ access_key: FEEDBACK_KEY, subject: "Feedback teambuilding Dusseldorf", from_name: "Dusseldorf-site (anoniem)", message: body })
+      });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok || !j.success) throw new Error(j.message || r.status);
+      box.innerHTML = `<div class="fb-ok" tabindex="-1" id="fb-ok"><span class="ico">${I.ok}</span><h3>Succesvol doorgestuurd</h3><p>Bedankt voor je feedback!</p><button class="btn light" type="button" id="fb-again">Nog een bericht sturen</button></div>`;
+      document.getElementById("fb-ok").focus();
+      document.getElementById("fb-again").addEventListener("click", () => { box.innerHTML = html; bindFeedback(); document.getElementById("fb-text").focus(); });
+    } catch(err) {
+      send.disabled = false;
+      setMsg("Versturen lukte niet. Je tekst blijft staan: probeer het zo meteen opnieuw.", true);
+    }
+  });
+}
+
 /* ============================ NU / STRAKS ============================ */
 const fmtDur = ms => { const m = Math.max(0, Math.round(ms/60000)); if (m < 60) return `${m} min`; const h = Math.floor(m/60), r = m%60; if (h < 24) return `${h}u${r?String(r).padStart(2,'0'):''}`; const d = Math.round(h/24); return `${d} ${d===1?'dag':'dagen'}`; };
 const dayName = it => DAYS.find(d => d.id === it.day).label.toLowerCase();
@@ -705,8 +780,8 @@ async function loadWeather() {
 
 /* ============================ START ============================ */
 const panels = document.getElementById("panels");
-panels.innerHTML = renderDays() + renderInfo();
-renderTabs(); bindPack();
+panels.innerHTML = renderDays() + renderInfo() + renderFeedback();
+renderTabs(); bindPack(); bindFeedback();
 panels.addEventListener("click", e => {
   const b = e.target.closest(".past-toggle"); if (b) { pastOpen[b.dataset.past] = !pastOpen[b.dataset.past]; renderLive(); }
 });
