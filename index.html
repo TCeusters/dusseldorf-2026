@@ -790,7 +790,9 @@ panels.addEventListener("click", e => {
   const today = DAYS.find(d => { const s = ts(d.iso, "04:00"); return now >= s && now < s + 24*3600e3; });
   let saved = null; try { saved = sessionStorage.getItem("dus-tab"); } catch(e){}
   const hash = location.hash.slice(1);
-  selectTab(TABS.some(t => t.id === hash) ? hash : (today ? today.id : (saved || "vr")), false);
+  // Na het weekend opent de site op de Feedback-tab.
+  const after = now >= ts(DAYS[DAYS.length - 1].iso, "04:00") + 24*3600e3;
+  selectTab(TABS.some(t => t.id === hash) ? hash : (today ? today.id : (saved || (after ? "feedback" : "vr"))), false);
 })();
 renderLive(); renderCountdown(); loadWeather(); setInterval(loadWeather, 3600e3);
 (function focusNow(){
